@@ -14,6 +14,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This is a useful ImageView wrapper that will show a loading indicator until the image finishes
+ * loading.
+ * <p>
+ * When this View begins loading a new image, it starts a background thread to do so. To avoid
+ * having every possible image starting its own thread, this View utilizes a thread pool specific
+ * for this View.
+ */
 class LoadableImageView extends FrameLayout {
     private static final String TAG = LoadableImageView.class.getCanonicalName();
     private static Executor mExecutor = new ThreadPoolExecutor(
@@ -23,6 +31,11 @@ class LoadableImageView extends FrameLayout {
     private ProgressBar mLoader;
     private ImageView mImage;
 
+    /**
+     * Create a new LoadableImageView.
+     *
+     * @param context the context for this View
+     */
     LoadableImageView(Context context) {
         super(context);
 
@@ -43,6 +56,13 @@ class LoadableImageView extends FrameLayout {
         this.addView(mImage);
     }
 
+    /**
+     * Begin loading a new image.
+     * <p>
+     * A loading indicator is shown until complete.
+     *
+     * @param url the URL to load
+     */
     void loadImage(URL url) {
         mExecutor.execute(() -> {
             try {

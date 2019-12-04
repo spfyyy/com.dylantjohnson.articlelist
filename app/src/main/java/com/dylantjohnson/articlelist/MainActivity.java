@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * The starting activity. This activity shows the list of articles and is in charge of navigating to
+ * the individual article pages.
+ */
 public class MainActivity extends AppCompatActivity {
     private ArticleListView mArticleList;
 
@@ -33,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Switch to a specific article page view.
+     *
+     * @param article the article to show
+     */
     private void navigateToArticle(Article article) {
         Intent intent = new Intent(this, ArticleActivity.class);
         Bundle params = new Bundle();

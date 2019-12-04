@@ -5,15 +5,25 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.core.util.Consumer;
 
+/**
+ * This View is used for displaying Article previews.
+ */
 public class ArticlePeakView extends LinearLayout {
     private LoadableImageView mPicture;
     private TextView mTitle;
     private TextView mSummary;
 
-    public ArticlePeakView(Context context) {
+    /**
+     * Create a new ArticlePeakView.
+     * <p>
+     * This View is aware that the first Article in the list is displayed differently and will hide
+     * or update its children accordingly.
+     *
+     * @param context the context for this View
+     */
+    ArticlePeakView(Context context) {
         super(context);
         setOrientation(VERTICAL);
 
@@ -38,7 +48,14 @@ public class ArticlePeakView extends LinearLayout {
         addView(mSummary);
     }
 
-    public void load(Article article, boolean first, Consumer<Article> onClick) {
+    /**
+     * Change the contents of this View.
+     *
+     * @param article the Article this View will preview
+     * @param first whether this Article is the first on the list or not
+     * @param onClick the code to run when an article is selected
+     */
+    void load(Article article, boolean first, Consumer<Article> onClick) {
         mSummary.setVisibility(first ? VISIBLE : GONE);
         mPicture.loadImage(article.getImageUrl());
         mTitle.setText(article.getTitle());

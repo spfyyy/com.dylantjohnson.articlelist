@@ -9,15 +9,32 @@ import java.util.List;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+/**
+ * A utility class for fetching the Article RSS feed.
+ */
 class ArticleService {
     private static final String TAG = ArticleService.class.getCanonicalName();
 
     private URL mUrl;
 
+    /**
+     * Create an ArticleService instance.
+     *
+     * @param url the URL to use for fetching the RSS feed
+     * @throws MalformedURLException if the URL is no good
+     */
     ArticleService(String url) throws MalformedURLException {
         mUrl = new URL(url);
     }
 
+    /**
+     * Asynchronously fetch the RSS feed.
+     * <p>
+     * This will fetch the feed in a background thread, so be sure that the callback is aware to
+     * avoid UI thread exceptions and such.
+     *
+     * @param callback the code to run after fetching the RSS feed
+     */
     void get(Consumer<List<Article>> callback) {
         new Thread(() -> run(callback)).start();
     }
@@ -32,7 +49,6 @@ class ArticleService {
             URL imageUrl = null;
             String title = null;
             String description = null;
-            String content = null;
             URL link = null;
             while (type != XmlPullParser.END_DOCUMENT) {
                 if (type == XmlPullParser.START_TAG) {
@@ -45,8 +61,6 @@ class ArticleService {
                             title = parser.nextText();
                         } else if (name.equalsIgnoreCase("description")) {
                             description = parser.nextText();
-                        } else if (name.equalsIgnoreCase("content:encoded")) {
-                            content = parser.nextText();
                         } else if (name.equalsIgnoreCase("media:content")) {
                             imageUrl = new URL(
                                     parser.getAttributeValue(null, "url"));
@@ -57,7 +71,7 @@ class ArticleService {
                 } else if (type == XmlPullParser.END_TAG
                         && parser.getName().equalsIgnoreCase("item")) {
                     inItem = false;
-                    articles.add(new Article(imageUrl, title, description, content, link));
+                    articles.add(new Article(imageUrl, title, description, link));
                 }
                 type = parser.next();
             }
