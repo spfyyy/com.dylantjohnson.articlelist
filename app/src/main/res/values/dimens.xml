@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="grid_margin">8dp</dimen>
+    <dimen name="title_text">8sp</dimen>
+    <dimen name="summary_text">6sp</dimen>
+</resources>

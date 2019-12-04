@@ -1,0 +1,49 @@
+package com.dylantjohnson.articlelist;
+
+import android.content.Context;
+import android.text.TextUtils;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.core.util.Consumer;
+
+public class ArticlePeakView extends LinearLayout {
+    private LoadableImageView mPicture;
+    private TextView mTitle;
+    private TextView mSummary;
+
+    public ArticlePeakView(Context context) {
+        super(context);
+        setOrientation(VERTICAL);
+
+        LayoutParams layout = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        int margin = context.getResources().getDimensionPixelSize(R.dimen.grid_margin);
+        layout.setMargins(margin, margin, margin, margin);
+        setLayoutParams(layout);
+
+        mPicture = new LoadableImageView(context);
+        addView(mPicture);
+
+        mTitle = new TextView(context);
+        mTitle.setEllipsize(TextUtils.TruncateAt.END);
+        mTitle.setTextSize(context.getResources().getDimension(R.dimen.title_text));
+        addView(mTitle);
+
+        mSummary = new TextView(context);
+        mSummary.setLines(2);
+        mSummary.setEllipsize(TextUtils.TruncateAt.END);
+        mSummary.setTextSize(context.getResources().getDimension(R.dimen.summary_text));
+        addView(mSummary);
+    }
+
+    public void load(Article article, boolean first, Consumer<Article> onClick) {
+        mSummary.setVisibility(first ? VISIBLE : GONE);
+        mPicture.loadImage(article.getImageUrl());
+        mTitle.setText(article.getTitle());
+        mSummary.setText(article.getDescription());
+        mTitle.setLines(first ? 1 : 2);
+        setOnClickListener(view -> onClick.accept(article));
+    }
+}

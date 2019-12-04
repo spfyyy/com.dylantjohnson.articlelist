@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Article List</string>
+    <string name="feed_url">https://www.personalcapital.com/blog/feed/</string>
+    <string name="article_param">article</string>
+</resources>
